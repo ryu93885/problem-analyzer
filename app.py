@@ -602,27 +602,27 @@ def main():
                 with col2:
                     if st.button("続けて入力"):
         # 問題番号を1つ増やし、他のフィールドをリセット
-                    st.session_state.problem_number += 1
-                    if 'analysis_result' in st.session_state:
-                        del st.session_state.analysis_result
+                        st.session_state.problem_number += 1
+                        if 'analysis_result' in st.session_state:
+                            del st.session_state.analysis_result
         
         # ラジオボタンの選択状態をリセット
-                    if 'correct' in st.session_state:
-                        del st.session_state.correct
-                    if 'hesitation' in st.session_state:
-                        del st.session_state.hesitation
-                    if 'cause' in st.session_state:
-                        del st.session_state.cause
-                    if 'mistake' in st.session_state:
-                        del st.session_state.mistake
-                    if 'knowledge' in st.session_state:
-                        del st.session_state.knowledge
-                    if 'experience' in st.session_state:
-                        del st.session_state.experience
-                    if 'issue' in st.session_state:
-                        del st.session_state.issue
+                        if 'correct' in st.session_state:
+                            del st.session_state.correct
+                        if 'hesitation' in st.session_state:
+                            del st.session_state.hesitation
+                        if 'cause' in st.session_state:
+                            del st.session_state.cause
+                        if 'mistake' in st.session_state:
+                            del st.session_state.mistake
+                        if 'knowledge' in st.session_state:
+                            del st.session_state.knowledge
+                        if 'experience' in st.session_state:
+                            del st.session_state.experience
+                        if 'issue' in st.session_state:
+                            del st.session_state.issue
             
-                    st.experimental_rerun()
+                        st.experimental_rerun()
 
             with col3:
                 if st.button("分析を終了"):
