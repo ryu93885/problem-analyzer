@@ -212,6 +212,7 @@ class ProblemAnalyzer:
                 return "保存するデータがありません。"
         except Exception as e:
             return f"保存中にエラーが発生しました: {str(e)}"
+
     def _get_excel_download_link(self, df, filename, sheet_name):
         """ExcelのダウンロードリンクのためのBase64エンコードされたデータを生成する"""
         output = BytesIO()
@@ -567,8 +568,7 @@ def main():
                         issue = st.radio("理解不足の詳細", ["用語の意味が分からない", "問題文の日本語が難しい", "解答を読んでも理解できない"], index=None, key=f"issue_{suffix}")
                         if issue:
                             st.session_state.issue = issue
-                        mistake, knowledge, experience = None, None, None
-                    
+                        mistake, knowledge, experience = None, None, None                    
                     # 知識不足の場合
                     elif cause == "知識不足":
                         knowledge = st.radio("知識のレベル", ["基本事項の暗記ミス", "応用知識の不足"], index=None, key=f"knowledge_{suffix}")
