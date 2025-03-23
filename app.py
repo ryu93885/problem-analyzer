@@ -598,33 +598,57 @@ def main():
                 
         
                     st.rerun()  # UIを更新
-
-            with col2:
-                if st.button("続けて入力"):
-                    # 問題番号を1つ増やし、他のフィールドをリセット
+        # col2のブロック内のボタン処理を修正
+                with col2:
+                    if st.button("続けて入力"):
+        # 問題番号を1つ増やし、他のフィールドをリセット
                     st.session_state.problem_number += 1
                     if 'analysis_result' in st.session_state:
                         del st.session_state.analysis_result
-                    
-                    st.session_state.update({
-                        
-                    })
-                    st.session_state.selected_number_1 = None
+        
+        # ラジオボタンの選択状態をリセット
+                    if 'correct' in st.session_state:
+                        del st.session_state.correct
+                    if 'hesitation' in st.session_state:
+                        del st.session_state.hesitation
+                    if 'cause' in st.session_state:
+                        del st.session_state.cause
+                    if 'mistake' in st.session_state:
+                        del st.session_state.mistake
+                    if 'knowledge' in st.session_state:
+                        del st.session_state.knowledge
+                    if 'experience' in st.session_state:
+                        del st.session_state.experience
+                    if 'issue' in st.session_state:
+                        del st.session_state.issue
+            
                     st.experimental_rerun()
-
 
             with col3:
                 if st.button("分析を終了"):
-                    # 現在の教科の分析をクリアして初期画面に戻る
-                    st.session_state.analyzer.results = []
-                    st.session_state.analyzer.subjects[st.session_state.analyzer.current_subject] = []
-                    st.session_state.app_stage = 'initial'
-                    if 'analysis_result' in st.session_state:
-                        del st.session_state.analysis_result
-                    
-                    st.session_state.update({
-                    
-                    })
-                    st.experimental_rerun()
+        # 現在の教科の分析をクリアして初期画面に戻る
+                st.session_state.analyzer.results = []
+                st.session_state.analyzer.subjects[st.session_state.analyzer.current_subject] = []
+                st.session_state.app_stage = 'initial'
+                if 'analysis_result' in st.session_state:
+                    del st.session_state.analysis_result
+        
+        # ラジオボタンの選択状態をリセット
+                if 'correct' in st.session_state:
+                    del st.session_state.correct
+                if 'hesitation' in st.session_state:
+                    del st.session_state.hesitation
+                if 'cause' in st.session_state:
+                    del st.session_state.cause
+                if 'mistake' in st.session_state:
+                    del st.session_state.mistake
+                if 'knowledge' in st.session_state:
+                    del st.session_state.knowledge
+                if 'experience' in st.session_state:
+                    del st.session_state.experience
+                if 'issue' in st.session_state:
+                    del st.session_state.issue
+            
+                st.experimental_rerun()
 if __name__ == "__main__":
     main()
