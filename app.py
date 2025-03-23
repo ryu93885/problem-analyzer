@@ -626,7 +626,7 @@ def main():
                         del st.session_state.analysis_result
                     st.session_state.radio_value = None
                     st.experimental_rerun()
-                                        issue = st.radio("理解不足の詳細", ["用語の意味が分からない", "問題文の日本語が難しい", "解答を読んでも理解できない"], index = None,key="issue")
+                    issue = st.radio("理解不足の詳細", ["用語の意味が分からない", "問題文の日本語が難しい", "解答を読んでも理解できない"], index = None,key="issue")
                     experience = st.radio("解法の経験", ["類似問題の経験あり", "全く経験がない"], index = None,key="experience")
                     knowledge = st.radio("知識のレベル", ["基本事項の暗記ミス", "応用知識の不足"],index = None, key="knowledge")
                     mistake = st.radio("計算ミスの傾向", ["初めてのミス", "同じミスを繰り返している"],index = None, key="mistake")
