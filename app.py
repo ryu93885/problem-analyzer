@@ -595,7 +595,7 @@ def main():
                         st.warning(file_data)
                     st.session_state.update({
                     })
-                    st.session_state.[corrent]=None
+                    st.session_state.[correct]=None
         
                     st.rerun()  # UIを更新
 
@@ -609,7 +609,7 @@ def main():
                     st.session_state.update({
                         
                     })
-                    st.session_state.[corrent]=None
+                    st.session_state.[correct]=None
                     st.rerun()  # UIを更新
                     st.experimental_rerun()
 
@@ -626,7 +626,7 @@ def main():
                     st.session_state.update({
                     
                     })
-                    st.session_state.[corrent]=None
+                    st.session_state.[correct]=None
                     st.rerun()  # UIを更新
                     st.experimental_rerun()
 if __name__ == "__main__":
