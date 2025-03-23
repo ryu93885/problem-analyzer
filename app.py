@@ -405,7 +405,7 @@ def reset_selection_states():
         if key in st.session_state:
             del st.session_state[key]
     # コメントもリセット
-    #st.session_state.comment = ""
+    st.session_state.comment = ""
 
 def check_all_selections_made(correct):
     """すべての必要な選択肢が選択されているかチェックする"""
@@ -616,7 +616,7 @@ def main():
                         for file_name, b64_data in file_data:
                             # ダウンロードリンクの生成
                             href = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64_data}" download="{file_name}">Download {file_name}</a>'
-                            st.markdown(href, unsafe_allow_html=True)
+                            st.markdown(href, unsafe_allow_html=False)
                     elif isinstance(file_data, str):
                         st.warning(file_data)
                     st.session_state.update({
