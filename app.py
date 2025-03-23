@@ -595,7 +595,7 @@ def main():
                         st.warning(file_data)
                     st.session_state.update({
                     })
-                    st.session_state.analyzer.correct = None
+                    st.session_state.analyzer.correct.index = None
                     st.rerun()  # UIを更新
 
             with col2:
@@ -604,7 +604,7 @@ def main():
                     st.session_state.problem_number += 1
                     if 'analysis_result' in st.session_state:
                         del st.session_state.analysis_result
-                    st.session_state.analyzer.correct = None
+                    st.session_state.analyzer.correct.index = None
                     st.session_state.update({
                         
                     })
@@ -620,7 +620,7 @@ def main():
                     st.session_state.app_stage = 'initial'
                     if 'analysis_result' in st.session_state:
                         del st.session_state.analysis_result
-                    st.session_state.analyzer.correct = None
+                    st.session_state.analyzer.correct.index = None
                     st.session_state.update({
                         
                     })
