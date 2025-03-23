@@ -519,7 +519,7 @@ def main():
             with col1:
                 problem_number = st.number_input("問題番号", min_value=1, value=st.session_state.problem_number, step=1)
                 st.session_state.problem_number = problem_number
-                st.session_state.selected_option = None
+                
                 
                 # 正解状況の選択
                 correct = st.radio("正解状況", ["正解", "不正解"], key="correct")
@@ -581,6 +581,9 @@ def main():
             with col1:
                 if st.button("結果をダウンロード"):
                     file_data = st.session_state.analyzer.save_results()
+                    reset_selection_states()
+                    st.session_state.selected_option = None
+                    st.rerun()  # UIを更新
                     
                     if isinstance(file_data, list) and file_data:
                         for file_name, b64_data in file_data:
@@ -595,6 +598,9 @@ def main():
 
             with col2:
                 if st.button("続けて入力"):
+                    reset_selection_states()
+                    st.session_state.selected_option = None
+                    st.rerun()  # UIを更新
                     # 問題番号を1つ増やし、他のフィールドをリセット
                     st.session_state.problem_number += 1
                     if 'analysis_result' in st.session_state:
@@ -606,6 +612,9 @@ def main():
 
             with col3:
                 if st.button("分析を終了"):
+                    reset_selection_states()
+                    st.session_state.selected_option = None
+                    st.rerun()  # UIを更新
                     # 現在の教科の分析をクリアして初期画面に戻る
                     st.session_state.analyzer.results = []
                     st.session_state.analyzer.subjects[st.session_state.analyzer.current_subject] = []
