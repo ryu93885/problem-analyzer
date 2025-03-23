@@ -553,7 +553,7 @@ def main():
                         issue = st.radio("理解不足の詳細", ["用語の意味が分からない", "問題文の日本語が難しい", "解答を読んでも理解できない"], key="issue")
                         mistake, knowledge, experience = None, None, None
             
-             with col2:
+            with col2:
                 # 分析実行ボタン（条件を満たした場合は自動的に実行）
                 if st.session_state.analyzer.current_subject != "未設定" and check_all_selections_made(correct):
                     analysis_result = st.session_state.analyzer.analyze_problem(
