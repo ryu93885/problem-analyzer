@@ -632,7 +632,7 @@ def main():
                     st.session_state.problem_number += 1
                     
                     # キー接尾辞を増やして全てのラジオボタンをリセット
-                    st.session_state.radio_key_suffix += 1
+                    #st.session_state.radio_key_suffix += 1
                     st.experimental_rerun()
             
             with col3:
