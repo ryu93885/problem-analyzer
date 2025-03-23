@@ -212,7 +212,6 @@ class ProblemAnalyzer:
                 return "保存するデータがありません。"
         except Exception as e:
             return f"保存中にエラーが発生しました: {str(e)}"
-
     def _get_excel_download_link(self, df, filename, sheet_name):
         """ExcelのダウンロードリンクのためのBase64エンコードされたデータを生成する"""
         output = BytesIO()
@@ -613,8 +612,8 @@ def main():
                 if st.button("結果をダウンロード"):
                     file_data = st.session_state.analyzer.save_results()
                     
-                    if file_data:
-                        for file_name,b64_data in file_data:
+                    if isinstance(file_data, list) and file_data:
+                        for file_name, b64_data in file_data:
                             # ダウンロードリンクの生成
                             href = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64_data}" download="{file_name}">Download {file_name}</a>'
                             st.markdown(href, unsafe_allow_html=True)
