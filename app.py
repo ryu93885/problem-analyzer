@@ -478,6 +478,7 @@ def main():
             st.session_state.analyzer.current_subject = "未設定"
             # 選択肢をリセット
             st.session_state.reset_selections = True
+            st.session_state.radio_value = None
             st.experimental_rerun()
     
     # 初期画面
@@ -591,7 +592,7 @@ def main():
                             st.markdown(href, unsafe_allow_html=True)
                     elif isinstance(file_data, str):
                         st.warning(file_data)
-                    reset_selection_states()
+                    st.session_state.radio_value = None
 
             with col2:
                 if st.button("続けて入力"):
@@ -599,7 +600,7 @@ def main():
                     st.session_state.problem_number += 1
                     if 'analysis_result' in st.session_state:
                         del st.session_state.analysis_result
-                    reset_selection_states()
+                    st.session_state.radio_value = None
                     st.experimental_rerun()
 
 
@@ -611,7 +612,7 @@ def main():
                     st.session_state.app_stage = 'initial'
                     if 'analysis_result' in st.session_state:
                         del st.session_state.analysis_result
-                    reset_selection_states()
+                    st.session_state.radio_value = None
                     st.experimental_rerun()
 if __name__ == "__main__":
     main()
