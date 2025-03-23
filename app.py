@@ -614,7 +614,7 @@ def main():
                     file_data = st.session_state.analyzer.save_results()
                     
                     if file_data:
-                        for in file_data:
+                        for file_name,b64_data in file_data:
                             # ダウンロードリンクの生成
                             href = f'<a href="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64_data}" download="{file_name}">Download {file_name}</a>'
                             st.markdown(href, unsafe_allow_html=True)
