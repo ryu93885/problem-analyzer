@@ -393,7 +393,7 @@ def reset_selection_states():
     """選択肢の状態をリセットする"""
     # 「正解」「不正解」以降の選択肢をリセット
     if 'correct' in st.session_state:
-        current_correct = st.session_state.correct
+        current_correct = None
         # 選択状態自体は残すが、その後の選択肢をリセット
         if 'hesitation' in st.session_state:
             del st.session_state.hesitation
@@ -592,14 +592,6 @@ def main():
                     elif isinstance(file_data, str):
                         st.warning(file_data)
 
-                    issue = st.radio("理解不足の詳細", ["用語の意味が分からない", "問題文の日本語が難しい", "解答を読んでも理解できない"], index = None,key="issue")
-                    experience = st.radio("解法の経験", ["類似問題の経験あり", "全く経験がない"], index = None,key="experience")
-                    knowledge = st.radio("知識のレベル", ["基本事項の暗記ミス", "応用知識の不足"],index = None, key="knowledge")
-                    mistake = st.radio("計算ミスの傾向", ["初めてのミス", "同じミスを繰り返している"],index = None, key="mistake")
-                    cause = st.radio("間違いの原因", ["計算ミスやケアレスミス", "知識不足", "解法が思いつかない", "問題文の理解不足"],index = None, key="cause")
-                    problem_number = st.number_input("問題番号", min_value=1, value=st.session_state.problem_number, step=1)
-                    
-                    
             with col2:
                 if st.button("続けて入力"):
                     # 問題番号を1つ増やし、他のフィールドをリセット
@@ -609,12 +601,6 @@ def main():
                     st.session_state.radio_value = None
                     st.experimental_rerun()
 
-                    issue = st.radio("理解不足の詳細", ["用語の意味が分からない", "問題文の日本語が難しい", "解答を読んでも理解できない"], index = None,key="issue")
-                    experience = st.radio("解法の経験", ["類似問題の経験あり", "全く経験がない"], index = None,key="experience")
-                    knowledge = st.radio("知識のレベル", ["基本事項の暗記ミス", "応用知識の不足"],index = None, key="knowledge")
-                    mistake = st.radio("計算ミスの傾向", ["初めてのミス", "同じミスを繰り返している"],index = None, key="mistake")
-                    cause = st.radio("間違いの原因", ["計算ミスやケアレスミス", "知識不足", "解法が思いつかない", "問題文の理解不足"],index = None, key="cause")
-                    problem_number = st.number_input("問題番号", min_value=1, value=st.session_state.problem_number, step=1)
 
             with col3:
                 if st.button("分析を終了"):
@@ -626,11 +612,5 @@ def main():
                         del st.session_state.analysis_result
                     st.session_state.radio_value = None
                     st.experimental_rerun()
-                    issue = st.radio("理解不足の詳細", ["用語の意味が分からない", "問題文の日本語が難しい", "解答を読んでも理解できない"], index = None,key="issue")
-                    experience = st.radio("解法の経験", ["類似問題の経験あり", "全く経験がない"], index = None,key="experience")
-                    knowledge = st.radio("知識のレベル", ["基本事項の暗記ミス", "応用知識の不足"],index = None, key="knowledge")
-                    mistake = st.radio("計算ミスの傾向", ["初めてのミス", "同じミスを繰り返している"],index = None, key="mistake")
-                    cause = st.radio("間違いの原因", ["計算ミスやケアレスミス", "知識不足", "解法が思いつかない", "問題文の理解不足"],index = None, key="cause")
-                    problem_number = st.number_input("問題番号", min_value=1, value=st.session_state.problem_number, step=1)
 if __name__ == "__main__":
     main()
