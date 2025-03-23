@@ -592,8 +592,8 @@ def main():
                             st.markdown(href, unsafe_allow_html=True)
                     elif isinstance(file_data, str):
                         st.warning(file_data)
+                    correct=None
                     st.session_state.radio_value = None
-                    correct = st.radio("正解状況", ["正解", "不正解"], index = None,key="correct")
             with col2:
                 if st.button("続けて入力"):
                     # 問題番号を1つ増やし、他のフィールドをリセット
@@ -601,7 +601,7 @@ def main():
                     if 'analysis_result' in st.session_state:
                         del st.session_state.analysis_result
                     st.session_state.radio_value = None
-                    correct = st.radio("正解状況", ["正解", "不正解"], index = None,key="correct")
+                    correct=None
                     st.experimental_rerun()
 
 
@@ -614,7 +614,7 @@ def main():
                     if 'analysis_result' in st.session_state:
                         del st.session_state.analysis_result
                     st.session_state.radio_value = None
-                    correct = st.radio("正解状況", ["正解", "不正解"], index = None,key="correct")
+                    correct=None
                     st.experimental_rerun()
 if __name__ == "__main__":
     main()
