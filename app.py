@@ -519,6 +519,7 @@ def main():
             with col1:
                 problem_number = st.number_input("問題番号", min_value=1, value=st.session_state.problem_number, step=1)
                 st.session_state.problem_number = problem_number
+                st.session_state.selected_option = None
                 
                 # 正解状況の選択
                 correct = st.radio("正解状況", ["正解", "不正解"], key="correct")
