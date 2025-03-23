@@ -609,10 +609,9 @@ def main():
                     st.session_state.update({
                         
                     })
-                    st.session_state[correct]=None
-                    selected_option = st.selectbox("選択してください", options, index=None, key=key_name)
 
-                    st.session_state.pop(key_name)  # 完全に削除してリセット
+
+                    st.session_state.pop(correct)  # 完全に削除してリセット
                     st.experimental_rerun()
 
 
