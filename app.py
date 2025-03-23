@@ -526,7 +526,7 @@ def main():
                 
                 
                 # 正解状況の選択
-                correct = st.radio("正解状況", ["正解", "不正解"], index = None,key="correct")
+                correct = st.radio("正解状況", ["正解", "不正解"], index = index=None if st.session_state.selected_number_1 is None else [1, 2, 3].index(st.session_state.selected_number_1),key="correct")
                 
                 # 正解の場合
                 if correct == "正解":
@@ -595,7 +595,7 @@ def main():
                         st.warning(file_data)
                     st.session_state.update({
                     })
-                    st.session_state[correct]=None
+                
         
                     st.rerun()  # UIを更新
 
@@ -609,9 +609,7 @@ def main():
                     st.session_state.update({
                         
                     })
-
-
-                    st.session_state.pop(correct)  # 完全に削除してリセット
+                    st.session_state.selected_number_1 = None
                     st.experimental_rerun()
 
 
@@ -627,7 +625,6 @@ def main():
                     st.session_state.update({
                     
                     })
-                    st.session_state[correct]=None
                     st.experimental_rerun()
 if __name__ == "__main__":
     main()
