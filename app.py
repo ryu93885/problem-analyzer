@@ -590,6 +590,8 @@ def main():
                         st.warning(file_data)
                     reset_selection_states()
                     st.session_state.selected_option = None
+                    st.rerun()  # UIを更新
+
             with col2:
                 if st.button("続けて入力"):
                     # 問題番号を1つ増やし、他のフィールドをリセット
@@ -599,6 +601,8 @@ def main():
                     st.experimental_rerun()
                     reset_selection_states()
                     st.session_state.selected_option = None
+                    st.rerun()  # UIを更新
+
             with col3:
                 if st.button("分析を終了"):
                     # 現在の教科の分析をクリアして初期画面に戻る
@@ -610,5 +614,7 @@ def main():
                     st.experimental_rerun()
                     reset_selection_states()
                     st.session_state.selected_option = None
+                    st.rerun()  # UIを更新
+
 if __name__ == "__main__":
     main()
