@@ -522,36 +522,36 @@ def main():
                 
                 
                 # 正解状況の選択
-                correct = st.radio("正解状況", ["正解", "不正解"], key="correct")
+                correct = st.radio("正解状況", ["正解", "不正解"], index = None,key="correct")
                 
                 # 正解の場合
                 if correct == "正解":
-                    hesitation = st.radio("解答プロセス", ["スムーズに解けた", "途中で手が止まった"], key="hesitation")
+                    hesitation = st.radio("解答プロセス", ["スムーズに解けた", "途中で手が止まった"],index = None, key="hesitation")
                     cause, mistake, knowledge, experience, issue = None, None, None, None, None
                 
                 # 不正解の場合
                 elif correct == "不正解":
                     hesitation = None
-                    cause = st.radio("間違いの原因", ["計算ミスやケアレスミス", "知識不足", "解法が思いつかない", "問題文の理解不足"], key="cause")
+                    cause = st.radio("間違いの原因", ["計算ミスやケアレスミス", "知識不足", "解法が思いつかない", "問題文の理解不足"],index = None, key="cause")
                     
                     # 計算ミスやケアレスミスの場合
                     if cause == "計算ミスやケアレスミス":
-                        mistake = st.radio("計算ミスの傾向", ["初めてのミス", "同じミスを繰り返している"], key="mistake")
+                        mistake = st.radio("計算ミスの傾向", ["初めてのミス", "同じミスを繰り返している"],index = None, key="mistake")
                         knowledge, experience, issue = None, None, None
                     
                     # 知識不足の場合
                     elif cause == "知識不足":
-                        knowledge = st.radio("知識のレベル", ["基本事項の暗記ミス", "応用知識の不足"], key="knowledge")
+                        knowledge = st.radio("知識のレベル", ["基本事項の暗記ミス", "応用知識の不足"],index = None, key="knowledge")
                         mistake, experience, issue = None, None, None
                     
                     # 解法が思いつかないの場合
                     elif cause == "解法が思いつかない":
-                        experience = st.radio("解法の経験", ["類似問題の経験あり", "全く経験がない"], key="experience")
+                        experience = st.radio("解法の経験", ["類似問題の経験あり", "全く経験がない"], index = None,key="experience")
                         mistake, knowledge, issue = None, None, None
                     
                     # 問題文の理解不足の場合
                     elif cause == "問題文の理解不足":
-                        issue = st.radio("理解不足の詳細", ["用語の意味が分からない", "問題文の日本語が難しい", "解答を読んでも理解できない"], key="issue")
+                        issue = st.radio("理解不足の詳細", ["用語の意味が分からない", "問題文の日本語が難しい", "解答を読んでも理解できない"], index = None,key="issue")
                         mistake, knowledge, experience = None, None, None
             
             with col2:
@@ -597,15 +597,10 @@ def main():
                     if 'analysis_result' in st.session_state:
                         del st.session_state.analysis_result
                     st.experimental_rerun()
-                    reset_selection_states()
-                    st.session_state.selected_option = None
-                    st.rerun()  # UIを更新
+                    
 
             with col3:
                 if st.button("分析を終了"):
-                    reset_selection_states()
-                    st.session_state.selected_option = None
-                    st.rerun()  # UIを更新
                     # 現在の教科の分析をクリアして初期画面に戻る
                     st.session_state.analyzer.results = []
                     st.session_state.analyzer.subjects[st.session_state.analyzer.current_subject] = []
@@ -613,9 +608,6 @@ def main():
                     if 'analysis_result' in st.session_state:
                         del st.session_state.analysis_result
                     st.experimental_rerun()
-                    reset_selection_states()
-                    st.session_state.selected_option = None
-                    st.rerun()  # UIを更新
-
+                    
 if __name__ == "__main__":
     main()
