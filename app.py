@@ -99,6 +99,8 @@ class ProblemAnalyzer:
             # 重複問題の場合、比較結果を追加
             if comparison_result:
                 result_text += f"\n\n【重複問題の分析】\n{comparison_result}"
+            elif comment:
+                result_text += f"\n\n【コメント】\n{comment}"
 
             return result_text
         except Exception as e:
@@ -389,25 +391,21 @@ def init_session_state():
     # 選択肢のリセット管理用
     if 'reset_selections' not in st.session_state:
         st.session_state.reset_selections = False
+    # ラジオボタンのキー接尾辞用カウンター
+    if 'radio_key_suffix' not in st.session_state:
+        st.session_state.radio_key_suffix = 0
+    # コメント用のセッション状態
+    if 'comment' not in st.session_state:
+        st.session_state.comment = ""
 
 def reset_selection_states():
     """選択肢の状態をリセットする"""
-    # 「正解」「不正解」以降の選択肢をリセット
-    if 'correct' in st.session_state:
-        current_correct = st.session_state.correct
-        # 選択状態自体は残すが、その後の選択肢をリセット
-        if 'hesitation' in st.session_state:
-            del st.session_state.hesitation
-        if 'cause' in st.session_state:
-            del st.session_state.cause
-        if 'mistake' in st.session_state:
-            del st.session_state.mistake
-        if 'knowledge' in st.session_state:
-            del st.session_state.knowledge
-        if 'experience' in st.session_state:
-            del st.session_state.experience
-        if 'issue' in st.session_state:
-            del st.session_state.issue
+    keys_to_reset = ['correct', 'hesitation', 'cause', 'mistake', 'knowledge', 'experience', 'issue']
+    for key in keys_to_reset:
+        if key in st.session_state:
+            del st.session_state[key]
+    # コメントもリセット
+    st.session_state.comment = ""
 
 def check_all_selections_made(correct):
     """すべての必要な選択肢が選択されているかチェックする"""
@@ -432,47 +430,12 @@ def check_all_selections_made(correct):
     
     return False
 
-def reset_selection_states():
-    """選択肢の状態を完全にリセットする"""
-    keys_to_reset = ['correct', 'hesitation', 'cause', 'mistake', 'knowledge', 'experience', 'issue']
-    for key in keys_to_reset:
-        if key in st.session_state:
-            del st.session_state[key]
-
-def init_session_state():
-    if 'analyzer' not in st.session_state:
-        st.session_state.analyzer = ProblemAnalyzer()
-    if 'app_stage' not in st.session_state:
-        st.session_state.app_stage = 'initial'  # 'initial', 'upload', 'analysis'
-    if 'problem_number' not in st.session_state:
-        st.session_state.problem_number = 1
-    # 選択肢のリセット管理用
-    if 'reset_selections' not in st.session_state:
-        st.session_state.reset_selections = False
-    # ラジオボタンのキー接尾辞用カウンター
-    if 'radio_key_suffix' not in st.session_state:
-        st.session_state.radio_key_suffix = 0
-
-def init_session_state():
-    if 'analyzer' not in st.session_state:
-        st.session_state.analyzer = ProblemAnalyzer()
-    if 'app_stage' not in st.session_state:
-        st.session_state.app_stage = 'initial'  # 'initial', 'upload', 'analysis'
-    if 'problem_number' not in st.session_state:
-        st.session_state.problem_number = 1
-    # 選択肢のリセット管理用
-    if 'reset_selections' not in st.session_state:
-        st.session_state.reset_selections = False
-    # ラジオボタンのキー接尾辞用カウンター
-    if 'radio_key_suffix' not in st.session_state:
-        st.session_state.radio_key_suffix = 0
-
 def main():
     st.set_page_config(page_title="学習問題分析プログラム", layout="wide")
     
     # セッション状態の初期化
     init_session_state()
-    st.session_state.selected_option = None
+    
     # リセットフラグがオンの場合、選択肢をリセットする
     if st.session_state.reset_selections:
         reset_selection_states()
@@ -512,7 +475,7 @@ def main():
             st.session_state.analyzer.current_subject = "未設定"
             # 選択肢をリセット
             st.session_state.reset_selections = True
-            st.session_state.radio_value = None
+            st.session_state.radio_key_suffix = 0
             st.experimental_rerun()
     
     # 初期画面
@@ -557,25 +520,55 @@ def main():
                 problem_number = st.number_input("問題番号", min_value=1, value=st.session_state.problem_number, step=1)
                 st.session_state.problem_number = problem_number
                 
-                    
-                   # 正解状況の選択
+                # 正解状況の選択
                 suffix = st.session_state.radio_key_suffix
                 correct = st.radio("正解状況", ["正解", "不正解"], index=None, key=f"correct_{suffix}")
+                
+                # セッション状態に正解状況を保存
+                if correct:
+                    st.session_state.correct = correct
                 
                 # 正解の場合
                 if correct == "正解":
                     hesitation = st.radio("解答プロセス", ["スムーズに解けた", "途中で手が止まった"], index=None, key=f"hesitation_{suffix}")
+                    if hesitation:
+                        st.session_state.hesitation = hesitation
                     cause, mistake, knowledge, experience, issue = None, None, None, None, None
                 
                 # 不正解の場合
                 elif correct == "不正解":
                     hesitation = None
                     cause = st.radio("間違いの原因", ["計算ミスやケアレスミス", "知識不足", "解法が思いつかない", "問題文の理解不足"], index=None, key=f"cause_{suffix}")
+                    if cause:
+                        st.session_state.cause = cause
                     
                     # 計算ミスやケアレスミスの場合
                     if cause == "計算ミスやケアレスミス":
                         mistake = st.radio("計算ミスの傾向", ["初めてのミス", "同じミスを繰り返している"], index=None, key=f"mistake_{suffix}")
+                        if mistake:
+                            st.session_state.mistake = mistake
                         knowledge, experience, issue = None, None, None
+                    
+                    # 知識不足の場合
+                    elif cause == "知識不足":
+                        knowledge = st.radio("知識のレベル", ["基本事項の暗記ミス", "応用知識の不足"], index=None, key=f"knowledge_{suffix}")
+                        if knowledge:
+                            st.session_state.knowledge = knowledge
+                        mistake, experience, issue = None, None, None
+                    
+                    # 解法が思いつかないの場合
+                    elif cause == "解法が思いつかない":
+                        experience = st.radio("解法の経験", ["類似問題の経験あり", "全く経験がない"], index=None, key=f"experience_{suffix}")
+                        if experience:
+                            st.session_state.experience = experience
+                        mistake, knowledge, issue = None, None, None
+                    
+                    # 問題文の理解不足の場合
+                    elif cause == "問題文の理解不足":
+                        issue = st.radio("理解不足の詳細", ["用語の意味が分からない", "問題文の日本語が難しい", "解答を読んでも理解できない"], index=None, key=f"issue_{suffix}")
+                        if issue:
+                            st.session_state.issue = issue
+                        mistake, knowledge, experience = None, None, None
                     
                     # 知識不足の場合
                     elif cause == "知識不足":
