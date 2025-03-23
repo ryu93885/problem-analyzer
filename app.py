@@ -453,7 +453,7 @@ def main():
     
     # 左右のカラムに分割
     left_col, right_col = st.columns([1, 3])
-    
+    new_correct = None
     with left_col:
         # 現在の教科表示
         st.text_input("現在の教科", value=st.session_state.analyzer.current_subject, disabled=True, key="current_subject_display")
@@ -526,7 +526,7 @@ def main():
                 
                 
                 # 正解状況の選択
-                correct = st.radio("正解状況", ["正解", "不正解"], index = None,key="correct")
+                correct = st.radio("正解状況", ["正解", "不正解"], index = new_correct,key="correct")
                 
                 # 正解の場合
                 if correct == "正解":
@@ -594,8 +594,9 @@ def main():
                     elif isinstance(file_data, str):
                         st.warning(file_data)
                     st.session_state.update({
+                        "new_corect":None
                     })
-                    st.session_state.reset_selection=True
+        
                     st.rerun()  # UIを更新
 
             with col2:
@@ -604,9 +605,9 @@ def main():
                     st.session_state.problem_number += 1
                     if 'analysis_result' in st.session_state:
                         del st.session_state.analysis_result
-                    st.session_state.reset_selection=True
+                    
                     st.session_state.update({
-                        
+                        "new_corect":None
                     })
                     st.rerun()  # UIを更新
                     st.experimental_rerun()
@@ -620,9 +621,9 @@ def main():
                     st.session_state.app_stage = 'initial'
                     if 'analysis_result' in st.session_state:
                         del st.session_state.analysis_result
-                    st.session_state.reset_selection=True
+                    
                     st.session_state.update({
-                        
+                        "new_corect":None
                     })
                     st.rerun()  # UIを更新
                     st.experimental_rerun()
