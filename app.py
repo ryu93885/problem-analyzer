@@ -581,9 +581,6 @@ def main():
             with col1:
                 if st.button("結果をダウンロード"):
                     file_data = st.session_state.analyzer.save_results()
-                    reset_selection_states()
-                    st.session_state.selected_option = None
-                    st.rerun()  # UIを更新
                     
                     if isinstance(file_data, list) and file_data:
                         for file_name, b64_data in file_data:
@@ -592,15 +589,9 @@ def main():
                             st.markdown(href, unsafe_allow_html=True)
                     elif isinstance(file_data, str):
                         st.warning(file_data)
-                    reset_selection_states()
-                    st.session_state.selected_option = None
-                    st.rerun()  # UIを更新
-
+                    
             with col2:
                 if st.button("続けて入力"):
-                    reset_selection_states()
-                    st.session_state.selected_option = None
-                    st.rerun()  # UIを更新
                     # 問題番号を1つ増やし、他のフィールドをリセット
                     st.session_state.problem_number += 1
                     if 'analysis_result' in st.session_state:
