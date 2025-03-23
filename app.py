@@ -602,7 +602,7 @@ def main():
                     st.session_state.problem_number += 1
                     if 'analysis_result' in st.session_state:
                         del st.session_state.analysis_result
-                    st.session_state.analyze.correct = None
+                    st.session_state.analyzer.correct = None
                     st.session_state.update({
                         
                     })
