@@ -405,7 +405,7 @@ def reset_selection_states():
         if key in st.session_state:
             del st.session_state[key]
     # コメントもリセット
-    st.session_state.comment = ""
+    #st.session_state.comment = ""
 
 def check_all_selections_made(correct):
     """すべての必要な選択肢が選択されているかチェックする"""
