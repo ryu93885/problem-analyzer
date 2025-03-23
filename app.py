@@ -436,7 +436,7 @@ def main():
     
     # セッション状態の初期化
     init_session_state()
-    
+    st.session_state.selected_option = None
     # リセットフラグがオンの場合、選択肢をリセットする
     if st.session_state.reset_selections:
         reset_selection_states()
@@ -588,8 +588,8 @@ def main():
                             st.markdown(href, unsafe_allow_html=True)
                     elif isinstance(file_data, str):
                         st.warning(file_data)
-                reset_selection_states()
-                st.session_state.selected_option = None
+                    reset_selection_states()
+                    st.session_state.selected_option = None
             with col2:
                 if st.button("続けて入力"):
                     # 問題番号を1つ増やし、他のフィールドをリセット
@@ -597,7 +597,8 @@ def main():
                     if 'analysis_result' in st.session_state:
                         del st.session_state.analysis_result
                     st.experimental_rerun()
-                reset_selection_states()
+                    reset_selection_states()
+                    st.session_state.selected_option = None
             with col3:
                 if st.button("分析を終了"):
                     # 現在の教科の分析をクリアして初期画面に戻る
@@ -607,7 +608,7 @@ def main():
                     if 'analysis_result' in st.session_state:
                         del st.session_state.analysis_result
                     st.experimental_rerun()
-                reset_selection_states()
-                st.session_state.selected_option = None
+                    reset_selection_states()
+                    st.session_state.selected_option = None
 if __name__ == "__main__":
     main()
