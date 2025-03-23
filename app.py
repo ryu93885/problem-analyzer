@@ -594,7 +594,7 @@ def main():
                     elif isinstance(file_data, str):
                         st.warning(file_data)
                     st.session_state.update({
-                    currect=None
+                        currect=None
                     })
                     st.session_state.radio_value = None
             with col2:
@@ -605,7 +605,7 @@ def main():
                         del st.session_state.analysis_result
                     st.session_state.radio_value = None
                     st.session_state.update({
-                    currect=None
+                        currect=None
                     })
                     st.experimental_rerun()
 
@@ -620,7 +620,7 @@ def main():
                         del st.session_state.analysis_result
                     st.session_state.radio_value = None
                     st.session_state.update({
-                    currect=None
+                        currect=None
                     })
                     st.experimental_rerun()
 if __name__ == "__main__":
