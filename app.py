@@ -24,6 +24,7 @@ class ProblemAnalyzer:
           10: "読解力の向上\n国語の読解問題や、要約の練習を行う\n読書の時間を確保し、読解力を高める。",
           11: "根本的な理解の深化\n教科書や参考書を読み直す\n先生や友人に質問をして理解を深める"
         }
+        
 
     def set_subject(self, subject_name):
         if subject_name and subject_name != "":
@@ -592,7 +593,9 @@ def main():
                             st.markdown(href, unsafe_allow_html=True)
                     elif isinstance(file_data, str):
                         st.warning(file_data)
-                    correct=None
+                    st.session_state.update({
+                    currect=None
+                    })
                     st.session_state.radio_value = None
             with col2:
                 if st.button("続けて入力"):
@@ -601,7 +604,9 @@ def main():
                     if 'analysis_result' in st.session_state:
                         del st.session_state.analysis_result
                     st.session_state.radio_value = None
-                    correct=None
+                    st.session_state.update({
+                    currect=None
+                    })
                     st.experimental_rerun()
 
 
@@ -614,7 +619,9 @@ def main():
                     if 'analysis_result' in st.session_state:
                         del st.session_state.analysis_result
                     st.session_state.radio_value = None
-                    correct=None
+                    st.session_state.update({
+                    currect=None
+                    })
                     st.experimental_rerun()
 if __name__ == "__main__":
     main()
