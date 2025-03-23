@@ -432,6 +432,12 @@ def check_all_selections_made(correct):
     
     return False
 
+def reset_selection_states():
+    """選択肢の状態を完全にリセットする"""
+    keys_to_reset = ['correct', 'hesitation', 'cause', 'mistake', 'knowledge', 'experience', 'issue']
+    for key in keys_to_reset:
+        if key in st.session_state:
+            del st.session_state[key]
 
 
 def main():
@@ -599,30 +605,16 @@ def main():
         
                     st.rerun()  # UIを更新
         # col2のブロック内のボタン処理を修正
-                with col2:
-                    if st.button("続けて入力"):
+            with col2:
+                if st.button("続けて入力"):
         # 問題番号を1つ増やし、他のフィールドをリセット
-                        st.session_state.problem_number += 1
-                        if 'analysis_result' in st.session_state:
-                            del st.session_state.analysis_result
+                    st.session_state.problem_number += 1
+                    if 'analysis_result' in st.session_state:
+                        del st.session_state.analysis_result
         
-        # ラジオボタンの選択状態をリセット
-                        if 'correct' in st.session_state:
-                            del st.session_state.correct
-                        if 'hesitation' in st.session_state:
-                            del st.session_state.hesitation
-                        if 'cause' in st.session_state:
-                            del st.session_state.cause
-                        if 'mistake' in st.session_state:
-                            del st.session_state.mistake
-                        if 'knowledge' in st.session_state:
-                            del st.session_state.knowledge
-                        if 'experience' in st.session_state:
-                            del st.session_state.experience
-                        if 'issue' in st.session_state:
-                            del st.session_state.issue
-            
-                        st.experimental_rerun()
+        # 選択肢をリセット
+                    reset_selection_states()
+                    st.experimental_rerun()
 
             with col3:
                 if st.button("分析を終了"):
@@ -633,22 +625,8 @@ def main():
                     if 'analysis_result' in st.session_state:
                         del st.session_state.analysis_result
         
-        # ラジオボタンの選択状態をリセット
-                    if 'correct' in st.session_state:
-                        del st.session_state.correct
-                    if 'hesitation' in st.session_state:
-                        del st.session_state.hesitation
-                    if 'cause' in st.session_state:
-                        del st.session_state.cause
-                    if 'mistake' in st.session_state:
-                        del st.session_state.mistake
-                    if 'knowledge' in st.session_state:
-                        del st.session_state.knowledge
-                    if 'experience' in st.session_state:
-                        del st.session_state.experience
-                    if 'issue' in st.session_state:
-                        del st.session_state.issue
-            
+        # 選択肢をリセット
+                    reset_selection_states()
                     st.experimental_rerun()
 if __name__ == "__main__":
     main()
