@@ -630,8 +630,6 @@ def main():
                 if st.button("続けて入力"):
                     # 問題番号を1つ増やし、他のフィールドをリセット
                     st.session_state.problem_number += 1
-                    if 'analysis_result' in st.session_state:
-                        del st.session_state.analysis_result
                     
                     # キー接尾辞を増やして全てのラジオボタンをリセット
                     st.session_state.radio_key_suffix += 1
