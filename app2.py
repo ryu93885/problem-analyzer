@@ -73,7 +73,7 @@ class ProblemAnalyzer:
                         comparison_result = "得点までもう少し、あなたの努力は確実に実っています。実力がついています。"
 
                     # 古いエントリを削除
-                    
+                    self.results.pop(idx)
                     break
 
             problem_info = {
