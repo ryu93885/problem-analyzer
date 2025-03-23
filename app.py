@@ -526,7 +526,7 @@ def main():
                 
                 
                 # 正解状況の選択
-                correct = st.radio("正解状況", ["正解", "不正解"], index = index=None if st.session_state.selected_number_1 is None else [1, 2, 3].index(st.session_state.selected_number_1),key="correct")
+                correct = st.radio("正解状況", ["正解", "不正解"], index = None if st.session_state.selected_number_1 is None else [1, 2, 3].index(st.session_state.selected_number_1),key="correct")
                 
                 # 正解の場合
                 if correct == "正解":
