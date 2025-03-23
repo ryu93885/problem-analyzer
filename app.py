@@ -519,7 +519,7 @@ def main():
             st.header("問題分析")
             
             col1, col2 = st.columns(2)
-            
+            selected_number_1 = None
             with col1:
                 problem_number = st.number_input("問題番号", min_value=1, value=st.session_state.problem_number, step=1)
                 st.session_state.problem_number = problem_number
