@@ -605,7 +605,7 @@ def main():
                     st.session_state.problem_number += 1
                     if 'analysis_result' in st.session_state:
                         del st.session_state.analysis_result
-                    st.radio(index = 0)
+                    
                     st.session_state.update({
                         
                     })
