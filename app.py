@@ -439,6 +439,33 @@ def reset_selection_states():
         if key in st.session_state:
             del st.session_state[key]
 
+def init_session_state():
+    if 'analyzer' not in st.session_state:
+        st.session_state.analyzer = ProblemAnalyzer()
+    if 'app_stage' not in st.session_state:
+        st.session_state.app_stage = 'initial'  # 'initial', 'upload', 'analysis'
+    if 'problem_number' not in st.session_state:
+        st.session_state.problem_number = 1
+    # 選択肢のリセット管理用
+    if 'reset_selections' not in st.session_state:
+        st.session_state.reset_selections = False
+    # ラジオボタンのキー接尾辞用カウンター
+    if 'radio_key_suffix' not in st.session_state:
+        st.session_state.radio_key_suffix = 0
+
+def init_session_state():
+    if 'analyzer' not in st.session_state:
+        st.session_state.analyzer = ProblemAnalyzer()
+    if 'app_stage' not in st.session_state:
+        st.session_state.app_stage = 'initial'  # 'initial', 'upload', 'analysis'
+    if 'problem_number' not in st.session_state:
+        st.session_state.problem_number = 1
+    # 選択肢のリセット管理用
+    if 'reset_selections' not in st.session_state:
+        st.session_state.reset_selections = False
+    # ラジオボタンのキー接尾辞用カウンター
+    if 'radio_key_suffix' not in st.session_state:
+        st.session_state.radio_key_suffix = 0
 
 def main():
     st.set_page_config(page_title="学習問題分析プログラム", layout="wide")
@@ -530,40 +557,41 @@ def main():
                 problem_number = st.number_input("問題番号", min_value=1, value=st.session_state.problem_number, step=1)
                 st.session_state.problem_number = problem_number
                 
-                
-                # 正解状況の選択
-                correct = st.radio("正解状況", ["正解", "不正解"], index = None,key="correct")
+                    
+                   # 正解状況の選択
+                suffix = st.session_state.radio_key_suffix
+                correct = st.radio("正解状況", ["正解", "不正解"], index=None, key=f"correct_{suffix}")
                 
                 # 正解の場合
                 if correct == "正解":
-                    hesitation = st.radio("解答プロセス", ["スムーズに解けた", "途中で手が止まった"],index = None, key="hesitation")
+                    hesitation = st.radio("解答プロセス", ["スムーズに解けた", "途中で手が止まった"], index=None, key=f"hesitation_{suffix}")
                     cause, mistake, knowledge, experience, issue = None, None, None, None, None
                 
                 # 不正解の場合
                 elif correct == "不正解":
                     hesitation = None
-                    cause = st.radio("間違いの原因", ["計算ミスやケアレスミス", "知識不足", "解法が思いつかない", "問題文の理解不足"],index = None, key="cause")
+                    cause = st.radio("間違いの原因", ["計算ミスやケアレスミス", "知識不足", "解法が思いつかない", "問題文の理解不足"], index=None, key=f"cause_{suffix}")
                     
                     # 計算ミスやケアレスミスの場合
                     if cause == "計算ミスやケアレスミス":
-                        mistake = st.radio("計算ミスの傾向", ["初めてのミス", "同じミスを繰り返している"],index = None, key="mistake")
+                        mistake = st.radio("計算ミスの傾向", ["初めてのミス", "同じミスを繰り返している"], index=None, key=f"mistake_{suffix}")
                         knowledge, experience, issue = None, None, None
                     
                     # 知識不足の場合
                     elif cause == "知識不足":
-                        knowledge = st.radio("知識のレベル", ["基本事項の暗記ミス", "応用知識の不足"],index = None, key="knowledge")
+                        knowledge = st.radio("知識のレベル", ["基本事項の暗記ミス", "応用知識の不足"], index=None, key=f"knowledge_{suffix}")
                         mistake, experience, issue = None, None, None
                     
                     # 解法が思いつかないの場合
                     elif cause == "解法が思いつかない":
-                        experience = st.radio("解法の経験", ["類似問題の経験あり", "全く経験がない"], index = None,key="experience")
+                        experience = st.radio("解法の経験", ["類似問題の経験あり", "全く経験がない"], index=None, key=f"experience_{suffix}")
                         mistake, knowledge, issue = None, None, None
                     
                     # 問題文の理解不足の場合
                     elif cause == "問題文の理解不足":
-                        issue = st.radio("理解不足の詳細", ["用語の意味が分からない", "問題文の日本語が難しい", "解答を読んでも理解できない"], index = None,key="issue")
+                        issue = st.radio("理解不足の詳細", ["用語の意味が分からない", "問題文の日本語が難しい", "解答を読んでも理解できない"], index=None, key=f"issue_{suffix}")
                         mistake, knowledge, experience = None, None, None
-            
+                    
             with col2:
                 # 分析実行ボタン（条件を満たした場合は自動的に実行）
                 if st.session_state.analyzer.current_subject != "未設定" and check_all_selections_made(correct):
@@ -607,26 +635,26 @@ def main():
         # col2のブロック内のボタン処理を修正
             with col2:
                 if st.button("続けて入力"):
-        # 問題番号を1つ増やし、他のフィールドをリセット
+                    # 問題番号を1つ増やし、他のフィールドをリセット
                     st.session_state.problem_number += 1
                     if 'analysis_result' in st.session_state:
                         del st.session_state.analysis_result
-        
-        # 選択肢をリセット
-                    reset_selection_states()
+                    
+                    # キー接尾辞を増やして全てのラジオボタンをリセット
+                    st.session_state.radio_key_suffix += 1
                     st.experimental_rerun()
-
+            
             with col3:
                 if st.button("分析を終了"):
-        # 現在の教科の分析をクリアして初期画面に戻る
+                    # 現在の教科の分析をクリアして初期画面に戻る
                     st.session_state.analyzer.results = []
                     st.session_state.analyzer.subjects[st.session_state.analyzer.current_subject] = []
                     st.session_state.app_stage = 'initial'
                     if 'analysis_result' in st.session_state:
                         del st.session_state.analysis_result
-        
-        # 選択肢をリセット
-                    reset_selection_states()
+                    
+                    # キー接尾辞を増やして全てのラジオボタンをリセット
+                    st.session_state.radio_key_suffix += 1
                     st.experimental_rerun()
 if __name__ == "__main__":
     main()
