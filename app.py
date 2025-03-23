@@ -595,14 +595,14 @@ def main():
                         st.warning(file_data)
                     st.session_state.update({
                     })
-                    st.session_state.radio_value = None
+                    st.session_state.analyzer.correct = None
             with col2:
                 if st.button("続けて入力"):
                     # 問題番号を1つ増やし、他のフィールドをリセット
                     st.session_state.problem_number += 1
                     if 'analysis_result' in st.session_state:
                         del st.session_state.analysis_result
-                    st.session_state.radio_value = None
+                    st.session_state.analyze.correct = None
                     st.session_state.update({
                         
                     })
@@ -617,7 +617,7 @@ def main():
                     st.session_state.app_stage = 'initial'
                     if 'analysis_result' in st.session_state:
                         del st.session_state.analysis_result
-                    st.session_state.radio_value = None
+                    st.session_state.analyzer.correct = None
                     st.session_state.update({
                         
                     })
