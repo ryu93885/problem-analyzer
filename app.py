@@ -396,17 +396,17 @@ def reset_selection_states():
         current_correct = None
         # 選択状態自体は残すが、その後の選択肢をリセット
         if 'hesitation' in st.session_state:
-            del st.session_state.hesitation
+            st.session_state.hesitation = None
         if 'cause' in st.session_state:
-            del st.session_state.cause
+            st.session_state.cause = None
         if 'mistake' in st.session_state:
-            del st.session_state.mistake
+            st.session_state.mistake = None
         if 'knowledge' in st.session_state:
-            del st.session_state.knowledge
+            st.session_state.knowledge = None
         if 'experience' in st.session_state:
-            del st.session_state.experience
+            st.session_state.experience = None
         if 'issue' in st.session_state:
-            del st.session_state.issue
+            st.session_state.issue = None
 
 def check_all_selections_made(correct):
     """すべての必要な選択肢が選択されているかチェックする"""
