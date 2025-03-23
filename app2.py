@@ -24,7 +24,6 @@ class ProblemAnalyzer:
           10: "読解力の向上\n国語の読解問題や、要約の練習を行う\n読書の時間を確保し、読解力を高める。",
           11: "根本的な理解の深化\n教科書や参考書を読み直す\n先生や友人に質問をして理解を深める"
         }
-        
 
     def set_subject(self, subject_name):
         if subject_name and subject_name != "":
@@ -386,64 +385,12 @@ def init_session_state():
         st.session_state.app_stage = 'initial'  # 'initial', 'upload', 'analysis'
     if 'problem_number' not in st.session_state:
         st.session_state.problem_number = 1
-    # 選択肢のリセット管理用
-    if 'reset_selections' not in st.session_state:
-        st.session_state.reset_selections = False
-
-def reset_selection_states():
-    """選択肢の状態をリセットする"""
-    # 「正解」「不正解」以降の選択肢をリセット
-    if 'correct' in st.session_state:
-        current_correct = st.session_state.correct
-        # 選択状態自体は残すが、その後の選択肢をリセット
-        if 'hesitation' in st.session_state:
-            del st.session_state.hesitation
-        if 'cause' in st.session_state:
-            del st.session_state.cause
-        if 'mistake' in st.session_state:
-            del st.session_state.mistake
-        if 'knowledge' in st.session_state:
-            del st.session_state.knowledge
-        if 'experience' in st.session_state:
-            del st.session_state.experience
-        if 'issue' in st.session_state:
-            del st.session_state.issue
-
-def check_all_selections_made(correct):
-    """すべての必要な選択肢が選択されているかチェックする"""
-    if not correct:
-        return False
-    
-    if correct == "正解":
-        return 'hesitation' in st.session_state
-    elif correct == "不正解":
-        if 'cause' not in st.session_state:
-            return False
-            
-        cause = st.session_state.cause
-        if cause == "計算ミスやケアレスミス":
-            return 'mistake' in st.session_state
-        elif cause == "知識不足":
-            return 'knowledge' in st.session_state
-        elif cause == "解法が思いつかない":
-            return 'experience' in st.session_state
-        elif cause == "問題文の理解不足":
-            return 'issue' in st.session_state
-    
-    return False
-
-
 
 def main():
     st.set_page_config(page_title="学習問題分析プログラム", layout="wide")
     
     # セッション状態の初期化
     init_session_state()
-    st.session_state.selected_option = None
-    # リセットフラグがオンの場合、選択肢をリセットする
-    if st.session_state.reset_selections:
-        reset_selection_states()
-        st.session_state.reset_selections = False
     
     st.title("学習問題分析プログラム")
     
@@ -468,18 +415,12 @@ def main():
                 st.success(result)
                 # 教科概要を更新
                 st.session_state.subject_summary = st.session_state.analyzer.get_subject_summary()
-                # 選択肢をリセット
-                st.session_state.reset_selections = True
-                st.experimental_rerun()
         
         # アプリケーション切り替えボタン
         if st.button("別の教科を分析する"):
             st.session_state.analyzer.results = []
             st.session_state.app_stage = 'initial'
             st.session_state.analyzer.current_subject = "未設定"
-            # 選択肢をリセット
-            st.session_state.reset_selections = True
-            st.session_state.radio_value = None
             st.experimental_rerun()
     
     # 初期画面
@@ -502,15 +443,11 @@ def main():
                     
                     # 分析画面に移動
                     st.session_state.app_stage = 'analysis'
-                    # 選択肢をリセット
-                    st.session_state.reset_selections = True
                     st.experimental_rerun()
                     
             elif import_choice == "No":
                 # 分析画面に移動
                 st.session_state.app_stage = 'analysis'
-                # 選択肢をリセット
-                st.session_state.reset_selections = True
                 st.experimental_rerun()
     
     # 分析画面
@@ -519,48 +456,46 @@ def main():
             st.header("問題分析")
             
             col1, col2 = st.columns(2)
-        
+            
             with col1:
                 problem_number = st.number_input("問題番号", min_value=1, value=st.session_state.problem_number, step=1)
                 st.session_state.problem_number = problem_number
                 
-                
-                # 正解状況の選択
-                correct = st.radio("正解状況", ["正解", "不正解"], index = None,key="correct")
+                correct = st.radio("正解状況", ["正解", "不正解"], key="correct")
                 
                 # 正解の場合
                 if correct == "正解":
-                    hesitation = st.radio("解答プロセス", ["スムーズに解けた", "途中で手が止まった"],index = None, key="hesitation")
+                    hesitation = st.radio("解答プロセス", ["スムーズに解けた", "途中で手が止まった"], key="hesitation")
                     cause, mistake, knowledge, experience, issue = None, None, None, None, None
                 
                 # 不正解の場合
                 elif correct == "不正解":
                     hesitation = None
-                    cause = st.radio("間違いの原因", ["計算ミスやケアレスミス", "知識不足", "解法が思いつかない", "問題文の理解不足"],index = None, key="cause")
+                    cause = st.radio("間違いの原因", ["計算ミスやケアレスミス", "知識不足", "解法が思いつかない", "問題文の理解不足"], key="cause")
                     
                     # 計算ミスやケアレスミスの場合
                     if cause == "計算ミスやケアレスミス":
-                        mistake = st.radio("計算ミスの傾向", ["初めてのミス", "同じミスを繰り返している"],index = None, key="mistake")
+                        mistake = st.radio("計算ミスの傾向", ["初めてのミス", "同じミスを繰り返している"], key="mistake")
                         knowledge, experience, issue = None, None, None
                     
                     # 知識不足の場合
                     elif cause == "知識不足":
-                        knowledge = st.radio("知識のレベル", ["基本事項の暗記ミス", "応用知識の不足"],index = None, key="knowledge")
+                        knowledge = st.radio("知識のレベル", ["基本事項の暗記ミス", "応用知識の不足"], key="knowledge")
                         mistake, experience, issue = None, None, None
                     
                     # 解法が思いつかないの場合
                     elif cause == "解法が思いつかない":
-                        experience = st.radio("解法の経験", ["類似問題の経験あり", "全く経験がない"], index = None,key="experience")
+                        experience = st.radio("解法の経験", ["類似問題の経験あり", "全く経験がない"], key="experience")
                         mistake, knowledge, issue = None, None, None
                     
                     # 問題文の理解不足の場合
                     elif cause == "問題文の理解不足":
-                        issue = st.radio("理解不足の詳細", ["用語の意味が分からない", "問題文の日本語が難しい", "解答を読んでも理解できない"], index = None,key="issue")
+                        issue = st.radio("理解不足の詳細", ["用語の意味が分からない", "問題文の日本語が難しい", "解答を読んでも理解できない"], key="issue")
                         mistake, knowledge, experience = None, None, None
             
             with col2:
-                # 分析実行ボタン（条件を満たした場合は自動的に実行）
-                if st.session_state.analyzer.current_subject != "未設定" and check_all_selections_made(correct):
+                # 分析実行ボタン
+                if st.button("分析実行"):
                     analysis_result = st.session_state.analyzer.analyze_problem(
                         st.session_state.analyzer.current_subject,
                         problem_number,
@@ -578,7 +513,6 @@ def main():
                 if 'analysis_result' in st.session_state:
                     st.text_area("分析結果", value=st.session_state.analysis_result, height=250, disabled=True)
             
-            
             # ボタン行
             col1, col2, col3 = st.columns(3)
             
@@ -593,26 +527,15 @@ def main():
                             st.markdown(href, unsafe_allow_html=True)
                     elif isinstance(file_data, str):
                         st.warning(file_data)
-                    st.session_state.update({
-                    })
-                
-        
-                    st.rerun()  # UIを更新
-
+            
             with col2:
                 if st.button("続けて入力"):
                     # 問題番号を1つ増やし、他のフィールドをリセット
                     st.session_state.problem_number += 1
                     if 'analysis_result' in st.session_state:
                         del st.session_state.analysis_result
-                    
-                    st.session_state.update({
-                        
-                    })
-                    st.session_state.selected_number_1 = None
                     st.experimental_rerun()
-
-
+            
             with col3:
                 if st.button("分析を終了"):
                     # 現在の教科の分析をクリアして初期画面に戻る
@@ -621,10 +544,7 @@ def main():
                     st.session_state.app_stage = 'initial'
                     if 'analysis_result' in st.session_state:
                         del st.session_state.analysis_result
-                    
-                    st.session_state.update({
-                    
-                    })
                     st.experimental_rerun()
+
 if __name__ == "__main__":
     main()
