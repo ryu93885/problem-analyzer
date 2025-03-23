@@ -610,7 +610,9 @@ def main():
                         
                     })
                     st.session_state[correct]=None
-                    st.rerun()  # UIを更新
+                    selected_option = st.selectbox("選択してください", options, index=None, key=key_name)
+
+                    st.session_state.pop(key_name)  # 完全に削除してリセット
                     st.experimental_rerun()
 
 
@@ -627,7 +629,6 @@ def main():
                     
                     })
                     st.session_state[correct]=None
-                    st.rerun()  # UIを更新
                     st.experimental_rerun()
 if __name__ == "__main__":
     main()
