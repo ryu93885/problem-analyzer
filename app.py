@@ -596,6 +596,8 @@ def main():
                     st.session_state.update({
                     })
                     st.session_state.analyzer.correct = None
+                    st.rerun()  # UIを更新
+
             with col2:
                 if st.button("続けて入力"):
                     # 問題番号を1つ増やし、他のフィールドをリセット
@@ -606,6 +608,7 @@ def main():
                     st.session_state.update({
                         
                     })
+                    st.rerun()  # UIを更新
                     st.experimental_rerun()
 
 
@@ -621,6 +624,7 @@ def main():
                     st.session_state.update({
                         
                     })
+                    st.rerun()  # UIを更新
                     st.experimental_rerun()
 if __name__ == "__main__":
     main()
